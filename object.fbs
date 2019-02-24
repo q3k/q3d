@@ -35,12 +35,6 @@ table Triangle {
 
     // Triangle face normal vector (magnitude 1). Required.
     normal: Vertex (required, id: 3);
-
-    // Material ID. All materials < 0 are treated as "don't care" materials by
-    // the consumer, which can be used to describe meshes that are to be
-    // processed by workflows that are color-agnostic (eg., single-color FFF
-    // 3D printing).
-    materialId: int8 = -1 (id: 4);
 }
 
 // A Material describes the visual properties of a Mesh.
@@ -56,8 +50,8 @@ table Material {
 table Mesh {
     // Triangles that make up the mesh. Required, can be empty (but why would you do that)
     triangles: [Triangle] (required, id: 0);
-    // Materials that the mesh uses. Required, can be empty.
-    materials: [Material] (required, id: 1);
+    // Material that the mesh uses. Required.
+    material: Material (required, id: 1);
 }
 
 // An Object is a collection of Meshes and the Root Type of the format.
