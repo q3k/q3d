@@ -20,12 +20,14 @@ It's based on [FlatBuffers](https://google.github.io/flatbuffers/), so you get i
 Capabilities
 ------------
 
-Currently we ship the spec for a 'q3d object' (`q3do`) file format. This format defines a single Object, that in turn contains multiple Meshes, each Mesh being made up of a Triangles with Materials.
+Currently we ship the spec for a 'q3d object' (`q3do`) file format. This format defines a single Object, that in turn contains multiple Meshes, each Mesh being made up of a list of Triangles and a Material.
 
 For more information, see `object.fbs`.
 
 Why not..?
 ----------
+
+Other file format?
 
  - STL: proprietary, no canonical colour support
  - STEP: designed by a committee, closed ISO spec
@@ -33,6 +35,15 @@ Why not..?
  - AMF: designed by a drunk committee, closed ISO spec
  - COLLADA: designed by a batshit insane committee
  - PLY: underspecified
+
+Features?
+
+ - Units other than millimeters: No.
+
+Future development
+------------------
+
+ - Textured triangles
 
 License
 -------
