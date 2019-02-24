@@ -38,9 +38,9 @@ table Color {
 table Triangle {
     // Three vertices that make up the geometry of the triangle. Required.
     // Position of vertices is in mm.
-    v1: Vector3 (required, id: 0);
-    v2: Vector3 (required, id: 1);
-    v3: Vector3 (required, id: 2);
+    vertex1: Vector3 (required, id: 0);
+    vertex2: Vector3 (required, id: 1);
+    vertex3: Vector3 (required, id: 2);
 
     // Consumers must use normal data in the following way:
     // 1) if all three vertex normals are given, they will be used,
@@ -54,7 +54,7 @@ table Triangle {
     // Normal vectors do not have to be unit vectors.
     
     faceNormal: Vector3 (id: 3);
-    // vertexNormal{1,2,3} correspond to vertices v{1,2,3}
+    // vertexNormal{1,2,3} correspond to vertices vertex{1,2,3}
     vertexNormal1: Vector3 (id: 4);
     vertexNormal2: Vector3 (id: 5);
     vertexNormal3: Vector3 (id: 6);
@@ -73,8 +73,9 @@ table Material {
 table Mesh {
     // Triangles that make up the mesh. Required, can be empty (but why would
     // you do that).
-    // All triangles must tesselate fully - ie., every triangle must share two
-    // vertices with it's neighbouring triangles.
+    // A mesh that represents a closed volume will have all triangles fully
+    // tesselated. However, this is not required nor guaranteed, and consumers
+    // should not assume this.
     triangles: [Triangle] (required, id: 0);
     // Material that the mesh uses. Required.
     material: Material (required, id: 1);
