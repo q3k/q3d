@@ -21,9 +21,16 @@ struct Vector3 {
 }
 
 table Color {
+    // Red channel.
     r: byte (id: 0);
+    // Green channel.
     g: byte (id: 1);
+    // Blue channel.
     b: byte (id: 2);
+    // Alpha channel. This is the transparency applied to a mesh triangle
+    // during rasterization rendering. Backside triangles have no opacity
+    // at all. Optional.
+    a: byte = 255 (id: 3);
 }
 
 // Single-sided triangle.
@@ -34,8 +41,20 @@ table Triangle {
     v2: Vector3 (required, id: 1);
     v3: Vector3 (required, id: 2);
 
-    // Triangle face normal vector (magnitude 1). Required.
-    normal: Vector3 (required, id: 3);
+    // Consumers must use normal data in the following way:
+    // 1) if all three vertex normals are given, they will be used,
+    // 2) otherwise, if the face normal is given, it will be used,
+    // 3) otherwise, a face normal will be calculated from trinangle verties
+    //    (in counter-clockwise front-facing mode).
+    // If the consumer does not support vertex normals, it can skip step 1).
+
+    // All normals must be unit vectors.
+
+    faceNormal: Vector3 (id: 3);
+    // vertexNormal{1,2,3} correspond to vertices v{1,2,3}
+    vertexNormal1: Vector3 (id: 4);
+    vertexNormal2: Vector3 (id: 5);
+    vertexNormal3: Vector3 (id: 6);
 }
 
 // A Material describes the visual properties of a Mesh.
@@ -43,13 +62,16 @@ table Material {
     // Opaque identifier for material, to be displayed to human end-user by consuming
     // tool. Optional.
     name: string (id: 0);
-    // Mesh color. Required.
+    // Mesh color, applied to every triangle. Required.
     color: Color (required, id: 1);
 }
 
 // A Mesh is a collection of Triangles that introduces material information.
 table Mesh {
-    // Triangles that make up the mesh. Required, can be empty (but why would you do that)
+    // Triangles that make up the mesh. Required, can be empty (but why would
+    // you do that).
+    // All triangles must tesselate fully - ie., every triangle must share two
+    // vertices with it's neighbouring triangles.
     triangles: [Triangle] (required, id: 0);
     // Material that the mesh uses. Required.
     material: Material (required, id: 1);
