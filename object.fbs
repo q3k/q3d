@@ -14,7 +14,7 @@
 
 namespace q3d;
 
-struct Vertex {
+struct Vector3 {
     x: float32;
     y: float32;
     z: float32;
@@ -29,12 +29,12 @@ table Color {
 // Single-sided triangle.
 table Triangle {
     // Three vertices that make up the geometry of the triangle. Required.
-    t1: Vertex (required, id: 0);
-    t2: Vertex (required, id: 1);
-    t3: Vertex (required, id: 2);
+    v1: Vector3 (required, id: 0);
+    v2: Vector3 (required, id: 1);
+    v3: Vector3 (required, id: 2);
 
     // Triangle face normal vector (magnitude 1). Required.
-    normal: Vertex (required, id: 3);
+    normal: Vector3 (required, id: 3);
 }
 
 // A Material describes the visual properties of a Mesh.
