@@ -5,7 +5,7 @@ Current Stability: **will break backwards compatibility**
 
 q3d is what you should want to use if you want your application to export/import simple 3d meshes.
 
-It only supports triangle-based meshes. There is no support for NURBS surfaces, Bezier curves, ... It is not meant to be a parimary format of storage for a 3d modelling program, or to represent parametric geometry. Instead, it should be used for 'baked' assets, for instance in games, CAM or CAD assembly.
+It only supports triangle-based meshes. There is no support for NURBS surfaces, Bezier curves, ... It is not meant to be a primary format of storage for a 3d modelling program, or to represent parametric geometry. Instead, it should be used for 'baked' assets, for instance in games, CAM or CAD assembly.
 
 It's based on [FlatBuffers](https://google.github.io/flatbuffers/), so you get importers/exporters for 'free' in at least the following programming languages:
  - C

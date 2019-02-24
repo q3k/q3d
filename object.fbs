@@ -27,8 +27,9 @@ table Color {
     g: ubyte (id: 1);
     // Blue channel.
     b: ubyte (id: 2);
-    // Alpha channel. This is the transparency applied to a mesh triangle
-    // during rasterization rendering. Backside triangles have no opacity
+    // Alpha channel. 0 is transparent, 255 is opaque.
+    // This is the transparency applied to a mesh triangle during rasterization
+    // rendering. Backside triangles have no opacity
     // at all. Optional.
     a: ubyte = 255 (id: 3);
 }
