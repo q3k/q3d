@@ -29,6 +29,7 @@ table Color {
 // Single-sided triangle.
 table Triangle {
     // Three vertices that make up the geometry of the triangle. Required.
+    // Position of vertices is in mm.
     v1: Vector3 (required, id: 0);
     v2: Vector3 (required, id: 1);
     v3: Vector3 (required, id: 2);
