@@ -47,9 +47,11 @@ table Triangle {
     // 3) otherwise, a face normal will be calculated from trinangle verties
     //    (in counter-clockwise front-facing mode).
     // If the consumer does not support vertex normals, it can skip step 1).
+    // This means that the producer is free to include either a face normal,
+    // vertex normals, both or none.
 
-    // All normals must be unit vectors.
-
+    // Normal vectors do not have to be unit vectors.
+    
     faceNormal: Vector3 (id: 3);
     // vertexNormal{1,2,3} correspond to vertices v{1,2,3}
     vertexNormal1: Vector3 (id: 4);
