@@ -22,15 +22,15 @@ struct Vector3 {
 
 table Color {
     // Red channel.
-    r: byte (id: 0);
+    r: ubyte (id: 0);
     // Green channel.
-    g: byte (id: 1);
+    g: ubyte (id: 1);
     // Blue channel.
-    b: byte (id: 2);
+    b: ubyte (id: 2);
     // Alpha channel. This is the transparency applied to a mesh triangle
     // during rasterization rendering. Backside triangles have no opacity
     // at all. Optional.
-    a: byte = 255 (id: 3);
+    a: ubyte = 255 (id: 3);
 }
 
 // Single-sided triangle.
