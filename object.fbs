@@ -1,0 +1,76 @@
+// Copyright 2019 Serge 'q3k' Bazanski
+// This file is licensed under a Creative Commons CC0 license
+// (https://creativecommons.org/share-your-work/public-domain/cc0/)
+
+// q3d - a boneless 3d object format for asset exchange.
+
+// Vaguely inspired by the Lowest Common Denominator of 3d files, STL.
+// This format is extensible within the bounds of what FlatBuffers offer.
+// However, such exensions are fundamentally incompatible with upstream 'q3d'
+// files, as extension identifiers may clash with other extensions. As such,
+// we kindly ask to not claim q3d compatibility if such extensions are in use
+// by your application, and instead either wrap the top-level Object in your
+// own FlatBuffer IDL, or upstream your required changes.
+
+namespace q3d;
+
+struct Vertex {
+    x: float32;
+    y: float32;
+    z: float32;
+}
+
+table Color {
+    r: byte (id: 0);
+    g: byte (id: 1);
+    b: byte (id: 2);
+}
+
+// Single-sided triangle.
+table Triangle {
+    // Three vertices that make up the geometry of the triangle. Required.
+    t1: Vertex (required, id: 0);
+    t2: Vertex (required, id: 1);
+    t3: Vertex (required, id: 2);
+
+    // Triangle face normal vector (magnitude 1). Required.
+    normal: Vertex (required, id: 3);
+
+    // Material ID. All materials < 0 are treated as "don't care" materials by
+    // the consumer, which can be used to describe meshes that are to be
+    // processed by workflows that are color-agnostic (eg., single-color FFF
+    // 3D printing).
+    materialId: int8 = -1 (id: 4);
+}
+
+// A Material describes the visual properties of a Mesh.
+table Material {
+    // Opaque identifier for material, to be displayed to human end-user by consuming
+    // tool. Optional.
+    name: string (id: 0);
+    // Mesh color. Required.
+    color: Color (required, id: 1);
+}
+
+// A Mesh is a collection of Triangles that introduces material information.
+table Mesh {
+    // Triangles that make up the mesh. Required, can be empty (but why would you do that)
+    triangles: [Triangle] (required, id: 0);
+    // Materials that the mesh uses. Required, can be empty.
+    materials: [Material] (required, id: 1);
+}
+
+// An Object is a collection of Meshes and the Root Type of the format.
+table Object {
+    // Meshes that make up the object. Required.
+    meshes: [Mesh] (required, id: 0);
+}
+
+// We brand the identifier and file extensions with 'o' for object. In case
+// we would also like to convey other data (either multi-object scenes, CAD
+// data, ...), these can be implemented in higher-level formats sharing the
+// same 'q3d' prefix family.
+
+file_identifier "Q3DO";
+file_extension "q3do";
+root_type Object;
