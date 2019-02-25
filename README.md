@@ -22,6 +22,12 @@ Currently we ship the spec for a 'q3d object' (`q3do`) file format. This format 
 
 For more information, see `object.fbs`.
 
+Tool support
+------------
+
+ - [SolveSpace](http://solvespace.com/index.pl), an open source 3D parametric CAM ([pull request](https://github.com/solvespace/solvespace/pull/384))
+ - [HorizonEDA](https://github.com/carrotIndustries/horizon), an open source PCB CAD ([pullrequest](https://github.com/carrotIndustries/horizon/pull/236))
+
 Why not..?
 ----------
 
@@ -42,6 +48,8 @@ Future development
 ------------------
 
  - Textured triangles
+ - Examples
+ - Toolkit (STL converter, viewer, analyzer)
 
 License
 -------
