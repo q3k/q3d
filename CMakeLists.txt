@@ -6,10 +6,18 @@ set(Q3D_HEADER_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set(Q3D_SCHEMA ${CMAKE_CURRENT_SOURCE_DIR}/object.fbs)
 set(Q3D_HEADER ${Q3D_HEADER_DIR}/object_generated.h)
 
-add_custom_command(
-    OUTPUT ${Q3D_HEADER}
-    COMMAND $<TARGET_FILE:flatc> --cpp --no-includes -o ${Q3D_HEADER_DIR}
-            ${Q3D_SCHEMA}
-    DEPENDS flatc)
+if(NOT FLATC)
+    # If not specified explicitly, use flatc from an adjacent flatbuffers
+    # CMake project.
+    add_custom_command(
+        OUTPUT ${Q3D_HEADER}
+        COMMAND $<TARGET_FILE:flatc> --cpp --no-includes -o ${Q3D_HEADER_DIR}
+                ${Q3D_SCHEMA}
+        DEPENDS flatc)
+else()
+    add_custom_command(
+        OUTPUT ${Q3D_HEADER}
+        COMMAND ${FLATC} --cpp --no-includes -o ${Q3D_HEADER_DIR} ${Q3D_SCHEMA})
+endif()
 
 add_custom_target(q3d_header DEPENDS ${Q3D_HEADER})
