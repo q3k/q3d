@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 project(q3d)
 
 set(Q3D_HEADER_DIR ${CMAKE_CURRENT_BINARY_DIR})
-set(Q3D_SCHEMA ${CMAKE_CURRENT_SOURCE_DIR}/object.fbs)
-set(Q3D_HEADER ${Q3D_HEADER_DIR}/object_generated.h)
+set(Q3D_SCHEMA ${CMAKE_CURRENT_SOURCE_DIR}/q3d_object.fbs)
+set(Q3D_HEADER ${Q3D_HEADER_DIR}/q3d_object_generated.h)
 
 if(NOT FLATC)
     # If not specified explicitly, use flatc from an adjacent flatbuffers
