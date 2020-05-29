@@ -20,6 +20,11 @@ struct Vector3 {
     z: float32;
 }
 
+struct UV {
+    u: float32;
+    v: float32;
+}
+
 table Color {
     // Red channel.
     r: ubyte (id: 0);
@@ -32,6 +37,18 @@ table Color {
     // rendering. Backside triangles have no opacity
     // at all. Optional.
     a: ubyte = 255 (id: 3);
+}
+
+table TextureOrValue3D {
+    r: ubyte (id: 0);
+    g: ubyte (id: 1);
+    b: ubyte (id: 2);
+    textureRef: string (id: 3);
+}
+
+table TextureOrValue1D {
+    v: float32 (id: 0);
+    textureRef: string (id: 1);
 }
 
 // Single-sided triangle.
@@ -58,6 +75,12 @@ table Triangle {
     vertexNormal1: Vector3 (id: 4);
     vertexNormal2: Vector3 (id: 5);
     vertexNormal3: Vector3 (id: 6);
+
+    // Texture UV coordinates for each vertex. Either all coordinates are given
+    // for all vertices, or none are.
+    vertexUV1: UV (id: 7);
+    vertexUV2: UV (id: 8);
+    vertexUV3: UV (id: 9);
 }
 
 // A Material describes the visual properties of a Mesh.
@@ -65,8 +88,34 @@ table Material {
     // Opaque identifier for material, to be displayed to human end-user by consuming
     // tool. Optional.
     name: string (id: 0);
-    // Mesh color, applied to every triangle. Required.
+    // Mesh color, applied to every triangle. Required. This color is used in
+    // non-photorealistic shading models, like basic Blinn-Phong shading in CAD
+    // software. In addition, a PBR Principled BRDF material can be defined by
+    // setting parameters lower down in this table.
     color: Color (required, id: 1);
+
+    // Principled BRDF shader parameters.
+    // If these are set, this material becomes a PBR BRDF shader, and the following
+    // parameters configure it. The `color` parameter is then ignored. If any parameters
+    // are set, all must be set.
+    //
+    // Burley, B., & Studios, W. D. A. (2012, August). Physically-based shading at disney.
+    // In ACM SIGGRAPH (Vol. 2012, pp. 1-7).
+
+    pbrdfBaseColor: TextureOrValue3D (id: 2);
+    pbrdfSubsurface: TextureOrValue1D (id: 3);
+    pbrdfSpecular: TextureOrValue1D (id: 4);
+    pbrdfSpecularTing: TextureOrValue1D (id: 5);
+    pbrdfRoughness: TextureOrValue1D (id: 6);
+    pbrdfAnisotropic: TextureOrValue1D (id: 7);
+    pbrdfSheen: TextureOrValue1D (id: 8);
+    pbrdfSheenTint: TextureOrValue1D (id: 9);
+    pbrdfClearcoat: TextureOrValue1D (id: 10);
+    pbrdfClearcoatGloss: TextureOrValue1D (id: 11);
+
+    // In addition to the principled shader parameters above, the material can also define
+    // a normal map texture.
+    normalMapTextureRef: string (id: 12);
 }
 
 // A Mesh is a collection of Triangles that introduces material information.
