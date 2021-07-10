@@ -12,12 +12,24 @@
 // by your application, and instead either wrap the top-level Object in your
 // own FlatBuffer IDL, or upstream your required changes.
 
-namespace q3d;
+namespace Q3DObject;
 
 struct Vector3 {
     x: float32;
     y: float32;
     z: float32;
+}
+
+struct Vector4 {
+    x: float32;
+    y: float32;
+    z: float32;
+    w: float32;
+}
+
+struct UV {
+    u: float32;
+    v: float32;
 }
 
 table Color {
@@ -34,7 +46,7 @@ table Color {
     a: ubyte = 255 (id: 3);
 }
 
-// Single-sided triangle.
+// Single-sided triangle for non-indexed drawing.
 table Triangle {
     // Three vertices that make up the geometry of the triangle. Required.
     // Position of vertices is in mm.
@@ -60,6 +72,24 @@ table Triangle {
     vertexNormal3: Vector3 (id: 6);
 }
 
+// Single-sided triangle for indexed drawing, and generally for optimized /
+// game-engine-style use.
+struct ITriangle {
+    // Indexes into the vertex array in the mesh.
+    vertex1: ushort (id: 0);
+    vertex2: ushort (id: 1);
+    vertex3: ushort (id: 2);
+}
+
+// Mesh vertex, for use with ITriangle (vs. Triangle which has self-contained
+// per-triangle data).
+table Vertex {
+    position: Vector3 (required, id: 0);
+    normal: Vector3 (required, id: 1);
+    tangent: Vector3 (id: 2);
+    uv: UV (id: 3);
+}
+
 // A Material describes the visual properties of a Mesh.
 table Material {
     // Opaque identifier for material, to be displayed to human end-user by consuming
@@ -69,16 +99,19 @@ table Material {
     color: Color (required, id: 1);
 }
 
-// A Mesh is a collection of Triangles that introduces material information.
+// A Mesh is a collection of triangles that introduces material information.
 table Mesh {
-    // Triangles that make up the mesh. Required, can be empty (but why would
-    // you do that).
-    // A mesh that represents a closed volume will have all triangles fully
-    // tesselated. However, this is not required nor guaranteed, and consumers
-    // should not assume this.
+    // Triangles that make up the mesh. Required, can be empty if itriangles
+    // and vertices is set.
     triangles: [Triangle] (required, id: 0);
     // Material that the mesh uses. Required.
     material: Material (required, id: 1);
+
+    // Indexed triangles, alternative to triangles for indexed drawing and
+    // general fast / game-engine-style use.
+    itriangles: [ITriangle] (id: 2);
+    // List of per-vertex-data, indexed into by ITriangles.
+    vertices: [Vertex] (id: 3);
 }
 
 // An Object is a collection of Meshes and the Root Type of the format.

@@ -1,0 +1,32 @@
+// Copyright 2019 Serge 'q3k' Bazanski
+// This file is licensed under a Creative Commons CC0 license
+// (https://creativecommons.org/share-your-work/public-domain/cc0/)
+
+// q3d - a boneless 3d object format for asset exchange.
+
+include "q3d_object.fbs";
+
+namespace Q3DModel;
+
+// Column-major 4x4 transformation matrix.
+struct Matrix4 {
+    c0: Q3DObject.Vector4;
+    c1: Q3DObject.Vector4;
+    c2: Q3DObject.Vector4;
+    c3: Q3DObject.Vector4;
+}
+
+table Node {
+    children: [Node] (id: 0);
+    mesh: Q3DObject.Mesh (id: 1);
+    transform: Matrix4 (id: 2);
+}
+
+table Model {
+    root: Node (id: 0);
+}
+
+file_identifier "Q3DM";
+file_extension "q3dm";
+root_type Model;
+
